@@ -138,7 +138,7 @@ const knowledgeItems: SearchItem[] = [
     subcategory: 'Lifecycle guide',
     route: '/project-lifecycle/',
     tags: ['project lifecycle', 'process groups', 'initiating', 'planning', 'executing', 'monitoring and controlling', 'closing'],
-    keywords: ['PMI project management lifecycle flow chart approval gates stakeholders deliverables phase relationships predictive hybrid governance'],
+    keywords: ['PMI project management lifecycle flow chart initiation approval gates stakeholders deliverables phase relationships predictive hybrid governance'],
     defaultPriority: 95,
   }),
 ];
