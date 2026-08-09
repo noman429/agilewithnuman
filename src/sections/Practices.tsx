@@ -20,6 +20,46 @@ export default function Practices({ theme }: { theme: Theme }) {
         <p style={{ fontSize: 14.5, color: theme.muted, margin: '0 0 28px', maxWidth: 640 }}>
           Click any framework card to expand: roles, artifacts, workflow, and trade-offs.
         </p>
+
+        <a
+          href="/project-lifecycle/"
+          aria-label="Open the interactive project management lifecycle flow"
+          className="card"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0,1fr) auto',
+            gap: 20,
+            alignItems: 'center',
+            padding: '22px',
+            marginBottom: 18,
+            border: `1px solid ${theme.cardBorder}`,
+            borderRadius: 16,
+            background: 'linear-gradient(135deg, rgba(91,124,250,.12), rgba(155,107,250,.08) 48%, rgba(34,197,94,.07))',
+            color: theme.text,
+            textDecoration: 'none',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 8 }}>
+              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#7b93ff' }}>Interactive guide</span>
+              <span style={{ fontSize: 10, color: theme.muted }}>PMI process-group lens</span>
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-.01em' }}>Project Management Lifecycle Flow</div>
+            <p style={{ margin: '7px 0 14px', maxWidth: 760, fontSize: 13, lineHeight: 1.55, color: theme.muted }}>
+              Explore Initiating, Planning, Executing, Monitoring &amp; Controlling, and Closing through activities, deliverables, stakeholders, approval gates, and cross-group feedback loops.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+              {['Initiate', 'Plan', 'Execute', 'Monitor & Control', 'Close'].map((step, index) => (
+                <span key={step} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 10.5, fontWeight: 700, color: index === 3 ? '#22c55e' : theme.muted }}>
+                  {index > 0 && <span aria-hidden="true" style={{ opacity: .42 }}>→</span>}
+                  {step}
+                </span>
+              ))}
+            </div>
+          </div>
+          <span aria-hidden="true" style={{ width: 42, height: 42, borderRadius: 13, display: 'grid', placeItems: 'center', background: 'rgba(91,124,250,.14)', color: '#7b93ff', fontSize: 20 }}>↗</span>
+        </a>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {METHOD_DATA.map((m, i) => {
             const open = openMethod === i;
