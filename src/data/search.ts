@@ -49,7 +49,7 @@ export interface SearchItem {
   description: string;
   category: SearchCategoryKey;
   subcategory?: string;
-  route: `#${string}`;
+  route: string;
   tags: string[];
   keywords: string[];
   icon?: string;
@@ -130,13 +130,26 @@ const toolItems = TOOL_GROUPS.flatMap((group) => group.items.map((tool) => makeI
   defaultPriority: tool.name === 'Jira' ? 84 : 0,
 })));
 
+const knowledgeItems: SearchItem[] = [
+  makeItem({
+    title: 'Project Management Lifecycle Flow',
+    description: 'Interactive process-group flow with activities, deliverables, stakeholders, approvals, and feedback loops.',
+    category: 'PROJECT_MANAGEMENT',
+    subcategory: 'Lifecycle guide',
+    route: '/project-lifecycle/',
+    tags: ['project lifecycle', 'process groups', 'initiating', 'planning', 'executing', 'monitoring and controlling', 'closing'],
+    keywords: ['PMI project management lifecycle flow chart approval gates stakeholders deliverables phase relationships predictive hybrid governance'],
+    defaultPriority: 95,
+  }),
+];
+
 const personalItems: SearchItem[] = [
   makeItem({ title: 'About Muhammad Numan', description: 'Project Manager, Scrum Master and Business Analyst based in Lahore.', category: 'PROFILE', route: '#about', tags: ['Muhammad Numan', 'about', 'profile'], keywords: ['availability languages location'], defaultPriority: 0 }),
   ...ROLES.map((role) => makeItem({ title: role.title, description: `${role.company} · ${role.dates}`, category: 'EXPERIENCE', subcategory: role.company, route: '#experience', tags: ['employment', 'role', role.company], keywords: role.bullets, defaultPriority: 0 })),
   makeItem({ title: 'Contact Muhammad', description: 'Connect by WhatsApp or email about opportunities and collaborations.', category: 'CONTACT', route: '#contact', tags: ['contact', 'hire'], keywords: ['message email whatsapp get in touch'], defaultPriority: 0 }),
 ];
 
-export const SEARCH_ITEMS: SearchItem[] = [...docItems, ...methodologyItems, ...projectItems, ...toolItems, ...personalItems];
+export const SEARCH_ITEMS: SearchItem[] = [...docItems, ...methodologyItems, ...projectItems, ...toolItems, ...knowledgeItems, ...personalItems];
 
 export const normalizeSearchText = (value: string) => value.toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 
