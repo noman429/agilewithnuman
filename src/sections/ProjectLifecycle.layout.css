@@ -1,0 +1,15 @@
+/* Keep alternating lifecycle cards flush with the SPA section's outer content edges
+   while preserving the intentional 28px breathing room around the center spine. */
+@media (min-width: 901px) {
+  #project-lifecycle .pl-row-left .pl-card {
+    justify-self: stretch;
+    width: auto;
+    margin-right: 28px;
+  }
+
+  #project-lifecycle .pl-row-right .pl-card {
+    justify-self: stretch;
+    width: auto;
+    margin-left: 28px;
+  }
+}
