@@ -29,6 +29,8 @@ export default function ScrollHintManager() {
   useEffect(() => {
     const listeners = new Map<HTMLElement, () => void>();
     const resizeObservers = new Map<HTMLElement, ResizeObserver>();
+    const ids = new WeakMap<HTMLElement, number>();
+    let nextId = 1;
     let frame = 0;
 
     const refresh = () => {
@@ -36,12 +38,17 @@ export default function ScrollHintManager() {
       frame = window.requestAnimationFrame(() => {
         const next = Array.from(document.querySelectorAll<HTMLElement>(MANAGED_SELECTOR))
           .filter((element) => isVisible(element) && hasMoreContent(element))
-          .map((element, index) => {
+          .map((element) => {
+            let id = ids.get(element);
+            if (!id) {
+              id = nextId++;
+              ids.set(element, id);
+            }
             const rect = element.getBoundingClientRect();
             const background = window.getComputedStyle(element).backgroundColor || 'rgb(18, 22, 38)';
             return {
               element,
-              key: `${element.className}-${index}`,
+              key: `scroll-surface-${id}`,
               left: Math.max(0, rect.left),
               bottom: Math.max(0, window.innerHeight - Math.min(window.innerHeight, rect.bottom)),
               width: Math.min(rect.width, window.innerWidth),
@@ -79,7 +86,7 @@ export default function ScrollHintManager() {
     };
 
     const mutationObserver = new MutationObserver(attach);
-    mutationObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
     window.addEventListener('resize', refresh, { passive: true });
     window.addEventListener('scroll', refresh, { passive: true });
     attach();
@@ -135,7 +142,7 @@ export default function ScrollHintManager() {
         } as CSSProperties;
 
         return (
-          <div key={hint.key} className="shared-scroll-hint-wrap" style={style} aria-hidden="false">
+          <div key={hint.key} className="shared-scroll-hint-wrap" style={style}>
             <button
               type="button"
               className="shared-scroll-hint"
