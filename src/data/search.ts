@@ -132,13 +132,13 @@ const toolItems = TOOL_GROUPS.flatMap((group) => group.items.map((tool) => makeI
 
 const knowledgeItems: SearchItem[] = [
   makeItem({
-    title: 'Project Management Lifecycle Flow',
-    description: 'Interactive process-group flow with activities, deliverables, stakeholders, approvals, and feedback loops.',
+    title: 'Project Management Lifecycle Flowchart',
+    description: 'Interactive five-phase flowchart with clickable activities, deliverables, stakeholders, and approvals.',
     category: 'PROJECT_MANAGEMENT',
     subcategory: 'Lifecycle guide',
-    route: '/project-lifecycle/',
-    tags: ['project lifecycle', 'process groups', 'initiating', 'planning', 'executing', 'monitoring and controlling', 'closing'],
-    keywords: ['PMI project management lifecycle flow chart initiation approval gates stakeholders deliverables phase relationships predictive hybrid governance'],
+    route: '#project-lifecycle',
+    tags: ['project lifecycle', 'flowchart', 'initiation', 'planning', 'execution', 'monitoring and controlling', 'closure'],
+    keywords: ['project management lifecycle flow chart initiation planning execution monitoring controlling closure approval stakeholders deliverables governance'],
     defaultPriority: 95,
   }),
 ];
