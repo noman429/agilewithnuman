@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Theme } from '../data/theme';
 import { AGILE_SUBGROUPS, CATEGORY_META, DOC_DATA, buildDocDetail } from '../data/docs';
+import { getAgileEnhancement } from '../data/agileEnhancements';
 import { CATEGORY_COPY, getDocEnhancement } from '../data/docEnhancements';
 import { highlightMatch } from '../utils';
 
@@ -20,16 +21,27 @@ export default function Docs({ theme }: { theme: Theme }) {
   const searchResults = useMemo(() => {
     if (!isSearching) return [];
     return catScoped.filter((d) => {
-      const enhancement = d.category === 'Agile Artifacts' ? undefined : getDocEnhancement(d.name);
+      const standardEnhancement = d.category === 'Agile Artifacts' ? undefined : getDocEnhancement(d.name);
+      const agileEnhancement = d.category === 'Agile Artifacts' ? getAgileEnhancement(d.name) : undefined;
       const searchable = [
         d.name,
         d.category,
         d.oneLiner,
-        enhancement?.summary,
-        enhancement?.definition,
-        enhancement?.why,
-        enhancement?.example,
-        enhancement?.related,
+        standardEnhancement?.summary,
+        standardEnhancement?.definition,
+        standardEnhancement?.why,
+        standardEnhancement?.example,
+        standardEnhancement?.related,
+        agileEnhancement?.definition,
+        agileEnhancement?.why,
+        agileEnhancement?.owner,
+        agileEnhancement?.inputs,
+        agileEnhancement?.outputs,
+        agileEnhancement?.example,
+        agileEnhancement?.bestPractice,
+        agileEnhancement?.commonMistake,
+        ...(agileEnhancement?.related || []),
+        ...(agileEnhancement?.interview || []),
       ].filter(Boolean).join(' ').toLowerCase();
       return searchable.includes(dq);
     });
@@ -51,6 +63,9 @@ export default function Docs({ theme }: { theme: Theme }) {
   const detailDoc = detailDocRaw ? buildDocDetail(detailDocRaw) : null;
   const detailEnhancement = detailDocRaw && detailDocRaw.category !== 'Agile Artifacts'
     ? getDocEnhancement(detailDocRaw.name)
+    : undefined;
+  const agileEnhancement = detailDocRaw && detailDocRaw.category === 'Agile Artifacts'
+    ? getAgileEnhancement(detailDocRaw.name)
     : undefined;
 
   const closeDocDetail = () => setDetailDocName(null);
@@ -176,22 +191,22 @@ export default function Docs({ theme }: { theme: Theme }) {
 
             {detailDoc.isAgile && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <Field label="Definition" value={detailDoc.definition} color={theme.text} muted={theme.muted} />
-                <Field label="Why it matters" value={detailDoc.why} color={theme.muted} muted={theme.muted} />
+                <Field label="Definition" value={agileEnhancement?.definition ?? detailDoc.definition} color={theme.text} muted={theme.muted} />
+                <Field label="Why it matters" value={agileEnhancement?.why ?? detailDoc.why} color={theme.muted} muted={theme.muted} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <Field label="Owner" value={detailDoc.owner} small color={theme.text} muted={theme.muted} />
-                  <Field label="Example" value={detailDoc.example} small color={theme.muted} muted={theme.muted} />
+                  <Field label="Owner / accountability" value={agileEnhancement?.owner ?? detailDoc.owner} small color={theme.text} muted={theme.muted} />
+                  <Field label="Real-world example" value={agileEnhancement?.example ?? detailDoc.example} small color={theme.muted} muted={theme.muted} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <Field label="Inputs" value={detailDoc.inputs} small color={theme.muted} muted={theme.muted} />
-                  <Field label="Outputs" value={detailDoc.outputs} small color={theme.muted} muted={theme.muted} />
+                  <Field label="Inputs / evidence" value={agileEnhancement?.inputs ?? detailDoc.inputs} small color={theme.muted} muted={theme.muted} />
+                  <Field label="Outputs / result" value={agileEnhancement?.outputs ?? detailDoc.outputs} small color={theme.muted} muted={theme.muted} />
                 </div>
-                <Field label="Best practice" value={detailDoc.bestPractice} color={theme.muted} muted="#22c55e" />
-                <Field label="Common mistake" value={detailDoc.commonMistake} color={theme.muted} muted="#f45fb0" />
+                <Field label="Best practice" value={agileEnhancement?.bestPractice ?? detailDoc.bestPractice} color={theme.muted} muted="#22c55e" />
+                <Field label="Common mistake" value={agileEnhancement?.commonMistake ?? detailDoc.commonMistake} color={theme.muted} muted="#f45fb0" />
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: theme.muted, marginBottom: 6 }}>Related concepts</div>
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    {(detailDoc.related || []).map((rel) => (
+                    {(agileEnhancement?.related ?? detailDoc.related ?? []).map((rel) => (
                       <span key={rel} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 999, background: theme.bg2, border: `1px solid ${theme.cardBorder}`, color: theme.text }}>{rel}</span>
                     ))}
                   </div>
@@ -199,7 +214,7 @@ export default function Docs({ theme }: { theme: Theme }) {
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: theme.muted, marginBottom: 6 }}>Interview questions</div>
                   <ul style={{ margin: 0, paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {(detailDoc.interview || []).map((qq) => (
+                    {(agileEnhancement?.interview ?? detailDoc.interview ?? []).map((qq) => (
                       <li key={qq} style={{ fontSize: 13.5, lineHeight: 1.5, color: theme.muted }}>{qq}</li>
                     ))}
                   </ul>
