@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { THEMES, type ThemeName } from './data/theme';
+import ScrollHintManager from './components/ScrollHintManager';
 import Nav, { NAV_SECTIONS } from './sections/Nav';
 import Hero from './sections/Hero';
 import About from './sections/About';
@@ -82,6 +83,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollHintManager />
       <div
         style={{
           position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
