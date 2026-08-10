@@ -7,6 +7,7 @@ import Experience from './sections/Experience';
 import Projects from './sections/Projects';
 import Practices from './sections/Practices';
 import ProjectLifecycle from './sections/ProjectLifecycle';
+import './sections/ProjectLifecycle.layout.css';
 import Docs from './sections/Docs';
 import Tools from './sections/Tools';
 import EducationContact from './sections/EducationContact';
