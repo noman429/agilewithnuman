@@ -74,10 +74,6 @@ export default function GlobalSearch({ theme }: { theme: Theme }) {
     const result = results[index];
     if (!result) return;
     close(false);
-    if (result.route.startsWith('/')) {
-      window.location.assign(result.route);
-      return;
-    }
     const section = result.route.slice(1);
     window.setTimeout(() => {
       document.getElementById(section)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
