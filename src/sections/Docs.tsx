@@ -1,7 +1,11 @@
 import { useMemo, useState } from 'react';
 import type { Theme } from '../data/theme';
 import { AGILE_SUBGROUPS, CATEGORY_META, DOC_DATA, buildDocDetail } from '../data/docs';
+import { CATEGORY_COPY, getDocEnhancement } from '../data/docEnhancements';
 import { highlightMatch } from '../utils';
+
+const getSummary = (name: string, category: string, fallback: string) =>
+  category === 'Agile Artifacts' ? fallback : getDocEnhancement(name)?.summary ?? fallback;
 
 export default function Docs({ theme }: { theme: Theme }) {
   const [docSearch, setDocSearch] = useState('');
@@ -15,9 +19,20 @@ export default function Docs({ theme }: { theme: Theme }) {
 
   const searchResults = useMemo(() => {
     if (!isSearching) return [];
-    return catScoped.filter(
-      (d) => d.name.toLowerCase().includes(dq) || d.category.toLowerCase().includes(dq) || d.oneLiner.toLowerCase().includes(dq),
-    );
+    return catScoped.filter((d) => {
+      const enhancement = d.category === 'Agile Artifacts' ? undefined : getDocEnhancement(d.name);
+      const searchable = [
+        d.name,
+        d.category,
+        d.oneLiner,
+        enhancement?.summary,
+        enhancement?.definition,
+        enhancement?.why,
+        enhancement?.example,
+        enhancement?.related,
+      ].filter(Boolean).join(' ').toLowerCase();
+      return searchable.includes(dq);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dq, catFilter]);
 
@@ -28,11 +43,15 @@ export default function Docs({ theme }: { theme: Theme }) {
     const groups = hasSubgroups
       ? AGILE_SUBGROUPS.filter((sg) => docs.some((d) => d.subgroup === sg.id)).map((sg) => ({ label: sg.label, docs: docs.filter((d) => d.subgroup === sg.id) }))
       : [{ label: null as string | null, docs }];
-    return { ...c, count: docs.length, groups, open };
+    const desc = c.id === 'Agile Artifacts' ? c.desc : CATEGORY_COPY[c.id] ?? c.desc;
+    return { ...c, desc, count: docs.length, groups, open };
   });
 
   const detailDocRaw = detailDocName ? DOC_DATA.find((d) => d.name === detailDocName) : null;
   const detailDoc = detailDocRaw ? buildDocDetail(detailDocRaw) : null;
+  const detailEnhancement = detailDocRaw && detailDocRaw.category !== 'Agile Artifacts'
+    ? getDocEnhancement(detailDocRaw.name)
+    : undefined;
 
   const closeDocDetail = () => setDetailDocName(null);
 
@@ -43,8 +62,8 @@ export default function Docs({ theme }: { theme: Theme }) {
       </div>
       <h2 className="reveal sec-heading" style={{ color: theme.text }}>A structured knowledge base, not a pile of files.</h2>
       <div className="sec-underline head-cyan-blue" style={{ marginBottom: 16 }} />
-      <p style={{ fontSize: 14.5, color: theme.muted, margin: '0 0 26px', maxWidth: 640 }}>
-        A structured collection of project management, business analysis, agile, architecture, QA, and delivery templates used throughout the software development lifecycle.
+      <p style={{ fontSize: 14.5, color: theme.muted, margin: '0 0 26px', maxWidth: 720, lineHeight: 1.65 }}>
+        Explore practical delivery artifacts with concise definitions, ownership context, and realistic examples showing what each document looks like in an actual software project.
       </p>
 
       <input
@@ -79,13 +98,16 @@ export default function Docs({ theme }: { theme: Theme }) {
       {isSearching && (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 14 }}>
-            {searchResults.map((d) => (
-              <div key={d.name} className="doc-card2" onClick={() => setDetailDocName(d.name)} style={{ background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: 12, padding: '16px 18px' }}>
-                <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#9b6bfa', marginBottom: 6 }}>{d.category}</div>
-                <div style={{ fontSize: 14.5, fontWeight: 700, marginBottom: 4 }}>{highlightMatch(d.name, dq)}</div>
-                <div style={{ fontSize: 12, color: theme.muted, lineHeight: 1.5 }}>{highlightMatch(d.oneLiner, dq)}</div>
-              </div>
-            ))}
+            {searchResults.map((d) => {
+              const summary = getSummary(d.name, d.category, d.oneLiner);
+              return (
+                <div key={d.name} className="doc-card2" onClick={() => setDetailDocName(d.name)} style={{ background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: 12, padding: '16px 18px' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#9b6bfa', marginBottom: 6 }}>{d.category}</div>
+                  <div style={{ fontSize: 14.5, fontWeight: 700, marginBottom: 4 }}>{highlightMatch(d.name, dq)}</div>
+                  <div style={{ fontSize: 12, color: theme.muted, lineHeight: 1.55 }}>{highlightMatch(summary, dq)}</div>
+                </div>
+              );
+            })}
           </div>
           {searchResults.length === 0 && (
             <div style={{ padding: 40, textAlign: 'center', color: theme.muted, fontSize: 14 }}>No documents match "{docSearch}".</div>
@@ -130,7 +152,7 @@ export default function Docs({ theme }: { theme: Theme }) {
                               onClick={() => setDetailDocName(d.name)}
                             >
                               <div style={{ fontSize: 14.5, fontWeight: 700, marginBottom: 5 }}>{d.name}</div>
-                              <div style={{ fontSize: 12, color: theme.muted, lineHeight: 1.5 }}>{d.oneLiner}</div>
+                              <div style={{ fontSize: 12, color: theme.muted, lineHeight: 1.55 }}>{getSummary(d.name, d.category, d.oneLiner)}</div>
                             </div>
                           ))}
                         </div>
@@ -147,10 +169,10 @@ export default function Docs({ theme }: { theme: Theme }) {
       {detailDoc && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
           <div onClick={closeDocDetail} style={{ position: 'absolute', inset: 0, background: 'rgba(5,6,14,0.6)', backdropFilter: 'blur(4px)' }} />
-          <div className="modal-pop" style={{ position: 'relative', maxWidth: 560, width: '100%', maxHeight: '82vh', overflowY: 'auto', background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: 20, padding: 32, boxShadow: '0 30px 80px -20px rgba(0,0,0,0.5)', backdropFilter: 'blur(20px)' }}>
+          <div className="modal-pop" style={{ position: 'relative', maxWidth: 640, width: '100%', maxHeight: '84vh', overflowY: 'auto', background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: 20, padding: 32, boxShadow: '0 30px 80px -20px rgba(0,0,0,0.5)', backdropFilter: 'blur(20px)' }}>
             <button onClick={closeDocDetail} style={{ position: 'absolute', top: 18, right: 18, width: 32, height: 32, borderRadius: '50%', border: `1px solid ${theme.cardBorder}`, background: theme.bg2, color: theme.text, cursor: 'pointer', fontSize: 16, lineHeight: 1 }}>×</button>
             <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#9b6bfa', marginBottom: 8 }}>{detailDoc.category}</div>
-            <h3 style={{ fontSize: 23, fontWeight: 800, margin: '0 0 18px' }}>{detailDoc.name}</h3>
+            <h3 style={{ fontSize: 23, fontWeight: 800, margin: '0 0 18px', paddingRight: 42 }}>{detailDoc.name}</h3>
 
             {detailDoc.isAgile && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -186,15 +208,18 @@ export default function Docs({ theme }: { theme: Theme }) {
             )}
 
             {detailDoc.notAgile && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <Field label="Purpose" value={detailDoc.purpose} color={theme.text} muted={theme.muted} />
-                <Field label="Description" value={detailDoc.description} color={theme.muted} muted={theme.muted} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                <Field label="Definition" value={detailEnhancement?.definition ?? detailDoc.description} color={theme.text} muted={theme.muted} />
+                <Field label="Why it matters" value={detailEnhancement?.why ?? detailDoc.purpose} color={theme.muted} muted="#7b93ff" />
+                <div style={{ padding: '16px 18px', borderRadius: 14, background: theme.bg2, border: `1px solid ${theme.cardBorder}` }}>
+                  <Field label="Real-world example" value={detailEnhancement?.example ?? detailDoc.example ?? 'Example varies by project context.'} color={theme.text} muted="#22c55e" />
+                </div>
                 <Field label="When to use it" value={detailDoc.when} color={theme.muted} muted={theme.muted} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <Field label="Created by" value={detailDoc.creates} small color={theme.text} muted={theme.muted} />
-                  <Field label="Approved by" value={detailDoc.approves} small color={theme.text} muted={theme.muted} />
+                  <Field label="Created / maintained by" value={detailDoc.creates} small color={theme.text} muted={theme.muted} />
+                  <Field label="Reviewed / approved by" value={detailDoc.approves} small color={theme.text} muted={theme.muted} />
                 </div>
-                <Field label="Related documents" value={detailDoc.relationship} color={theme.muted} muted={theme.muted} />
+                <Field label="Works with" value={detailEnhancement?.related ?? detailDoc.relationship} color={theme.muted} muted={theme.muted} />
               </div>
             )}
           </div>
@@ -207,8 +232,8 @@ export default function Docs({ theme }: { theme: Theme }) {
 function Field({ label, value, color, muted, small }: { label: string; value?: string; color: string; muted: string; small?: boolean }) {
   return (
     <div>
-      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: muted, marginBottom: 4 }}>{label}</div>
-      <p style={{ fontSize: small ? 13.5 : 14, lineHeight: small ? 1.5 : 1.6, color, margin: 0 }}>{value}</p>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: muted, marginBottom: 5 }}>{label}</div>
+      <p style={{ fontSize: small ? 13.5 : 14, lineHeight: small ? 1.5 : 1.65, color, margin: 0 }}>{value}</p>
     </div>
   );
 }
