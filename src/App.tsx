@@ -4,6 +4,7 @@ import Nav, { NAV_SECTIONS } from './sections/Nav';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Experience from './sections/Experience';
+import AIProjectDelivery from './sections/AIProjectDelivery';
 import Projects from './sections/Projects';
 import Practices from './sections/Practices';
 import ProjectLifecycle from './sections/ProjectLifecycle';
@@ -103,6 +104,7 @@ export default function App() {
         <Hero theme={theme} />
         <About theme={theme} />
         <Experience theme={theme} />
+        <AIProjectDelivery theme={theme} />
         <Projects theme={theme} />
         <Practices theme={theme} />
         <ProjectLifecycle theme={theme} />
