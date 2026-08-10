@@ -22,8 +22,8 @@ export default function Practices({ theme }: { theme: Theme }) {
         </p>
 
         <a
-          href="/project-lifecycle/"
-          aria-label="Open the interactive project management lifecycle flow"
+          href="#project-lifecycle"
+          aria-label="Jump to the interactive project management lifecycle flowchart"
           className="card"
           style={{
             display: 'grid',
@@ -41,12 +41,12 @@ export default function Practices({ theme }: { theme: Theme }) {
         >
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 8 }}>
-              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#7b93ff' }}>Interactive guide</span>
-              <span style={{ fontSize: 10, color: theme.muted }}>PMI process-group lens</span>
+              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#7b93ff' }}>Interactive flowchart</span>
+              <span style={{ fontSize: 10, color: theme.muted }}>5 connected phases</span>
             </div>
-            <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-.01em' }}>Project Management Lifecycle Flow</div>
+            <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-.01em' }}>Project Management Lifecycle</div>
             <p style={{ margin: '7px 0 14px', maxWidth: 760, fontSize: 13, lineHeight: 1.55, color: theme.muted }}>
-              Explore Initiating, Planning, Executing, Monitoring &amp; Controlling, and Closing through activities, deliverables, stakeholders, approval gates, and cross-group feedback loops.
+              A concise visual flow from Initiation to Closure. Click any activity, deliverable, stakeholder, or approval to open the detail.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
               {['Initiate', 'Plan', 'Execute', 'Monitor & Control', 'Close'].map((step, index) => (
@@ -57,7 +57,7 @@ export default function Practices({ theme }: { theme: Theme }) {
               ))}
             </div>
           </div>
-          <span aria-hidden="true" style={{ width: 42, height: 42, borderRadius: 13, display: 'grid', placeItems: 'center', background: 'rgba(91,124,250,.14)', color: '#7b93ff', fontSize: 20 }}>↗</span>
+          <span aria-hidden="true" style={{ width: 42, height: 42, borderRadius: 13, display: 'grid', placeItems: 'center', background: 'rgba(91,124,250,.14)', color: '#7b93ff', fontSize: 20 }}>↓</span>
         </a>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
