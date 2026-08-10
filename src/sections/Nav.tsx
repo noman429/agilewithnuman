@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import type { Theme } from '../data/theme';
 import GlobalSearch from '../GlobalSearch';
 
-const NAV_SECTIONS = ['about', 'experience', 'projects', 'practices', 'docs', 'tools', 'contact'] as const;
+const NAV_SECTIONS = ['about', 'experience', 'projects', 'practices', 'project-lifecycle', 'docs', 'tools', 'contact'] as const;
 const NAV_LABELS: Record<string, string> = {
   about: 'About', experience: 'Experience', projects: 'Projects', practices: 'Knowledge',
-  docs: 'Documentation', tools: 'Skills', contact: 'Contact',
+  'project-lifecycle': 'Lifecycle', docs: 'Documentation', tools: 'Skills', contact: 'Contact',
 };
 
 export { NAV_SECTIONS };
