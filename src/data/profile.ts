@@ -42,21 +42,22 @@ export const ROLES: Role[] = [
   { dates: 'Dec 2025 to Present', title: 'Project Manager / Scrum Master', company: 'WaxonIT Solutions, Lahore', bullets: [
     'Coordinate workflows and deliverables across development, QA, and design teams, keeping milestones, owners, and priorities on schedule.',
     'Act as communication bridge between technical teams and clients, translating requirements into user stories, workflows, and actionable tasks.',
-    'Use AI-assisted tools to accelerate requirement analysis, backlog refinement, and user story creation, improving turnaround without sacrificing quality.',
-    'Prepare status reports, meeting minutes, and release notes, using AI-assisted summarization to keep documentation current with less manual effort.',
+    'Use AI as a delivery copilot for requirement analysis, backlog refinement, user story and acceptance-criteria drafting, dependency reviews, and risk exploration, while manually validating outputs before project use.',
+    'Apply AI-assisted summarization to meeting notes, stakeholder updates, status reports, and release documentation, then verify actions, dates, scope, and commitments against the live project record.',
     'Track project progress and risks using Jira dashboards, flagging blockers before they affect delivery.',
   ] },
   { dates: 'Jun 2023 to Dec 2025', title: 'Project Manager / Scrum Master / SQA Lead', company: 'Visnext Software Solutions, Lahore', bullets: [
     'Coordinated cross-functional onsite and remote teams (UI/UX, frontend, backend, mobile, QA) across multiple concurrent projects.',
     'Managed end-to-end delivery from requirement gathering through release, keeping timelines, budgets, and quality standards on track.',
     'Collaborated with international clients and Product Owners to define scope, prioritize features, and build delivery roadmaps.',
-    'Adopted AI-assisted workflows to speed up sprint preparation and improve the quality and consistency of project documentation.',
-    'Enhanced stakeholder reporting with AI-generated summaries, reducing manual effort while keeping updates clear and timely.',
+    'Integrated AI-assisted workflows into sprint preparation, requirements clarification, backlog refinement, edge-case and test-scenario ideation, and project documentation to improve delivery readiness.',
+    'Used AI to accelerate first drafts of stakeholder summaries, meeting actions, release notes, and project updates, with PM review retained for accuracy, tone, ownership, and commitments.',
   ] },
   { dates: 'Aug 2021 to Jun 2023', title: 'Associate Project Manager / Project Manager', company: '3S Solutions (Pvt.) Ltd., Lahore', bullets: [
     'Led cross-functional Agile teams delivering Web, iOS, and Android applications within scope, timeline, and budget.',
     'Worked closely with UI/UX, development, and QA teams on wireframes, user flows, and actionable development tasks.',
     'Managed Jira boards, Confluence documentation, sprint reports, and release notes to keep teams and stakeholders aligned.',
+    'From late 2022, began using generative AI as an assistive tool for requirement drafting, test-scenario ideation, documentation structuring, and research, manually reviewing outputs before incorporating them into delivery work.',
   ] },
   { dates: 'Jan 2021 to Aug 2021', title: 'Project Coordinator & Solution Designer', company: 'Eyrox, Lahore', bullets: [
     'Evaluated business requirements and workflows to support solution development and coordination across teams.',
