@@ -141,6 +141,16 @@ const knowledgeItems: SearchItem[] = [
     keywords: ['project management lifecycle flow chart initiation planning execution monitoring controlling closure approval stakeholders deliverables governance'],
     defaultPriority: 95,
   }),
+  makeItem({
+    title: 'AI-Enabled Project Delivery',
+    description: 'Human-reviewed AI workflows for requirements, planning, risk, communication, QA, and documentation.',
+    category: 'PROJECT_MANAGEMENT',
+    subcategory: 'AI delivery workflow',
+    route: '#ai-delivery',
+    tags: ['AI project management', 'AI delivery', 'human in the loop', 'requirements', 'risk analysis', 'QA', 'documentation'],
+    keywords: ['ChatGPT Claude Codex artificial intelligence generative AI backlog refinement user stories acceptance criteria meeting summaries stakeholder communication release notes test scenarios project documentation business analysis PM BA QA'],
+    defaultPriority: 93,
+  }),
 ];
 
 const personalItems: SearchItem[] = [
